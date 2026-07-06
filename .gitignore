@@ -6,3 +6,31 @@
 /.phpunit.cache/
 /Resources/Public/BackendApp/*
 !/Resources/Public/BackendApp/.gitkeep
+/frontend/test-results/
+/frontend/playwright-report/
+/frontend/blob-report/
+/.env.e2e
+
+# TYPO3 local runtime/config
+/config/system/settings.php
+/var/
+/public/typo3temp/
+/public/_assets/
+
+# Local E2E secrets
+.env.e2e
+
+# Dependencies
+/vendor/
+/node_modules/
+/frontend/node_modules/
+
+# Playwright artifacts
+/playwright-report/
+/test-results/
+/blob-report/
+
+# DDEV generated/local files
+/.ddev/*
+!/.ddev/config.yaml
+!/.ddev/.gitignore

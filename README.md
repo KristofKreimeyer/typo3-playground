@@ -398,6 +398,127 @@ Frontend tests cover:
 - initial component selection
 - backend validation error display
 
+## Browser Smoke Test
+
+The local Playwright smoke test exercises the documented demo flow through the real TYPO3 backend. It logs in, opens **Web > Component Playground**, verifies registry loading, switches a Hero variant and preview viewport, checks malformed JSON and backend `invalid_props` handling, and confirms that the Fluid preview recovers after valid props are restored.
+
+The test lives in `frontend/tests/e2e/` and requires a running DDEV project plus a current backend app build. Install Playwright's Chromium browser once:
+
+```bash
+cd frontend
+npx playwright install chromium
+```
+
+Provide backend credentials through environment variables; never store them in the repository. Run the smoke test headlessly:
+
+```bash
+cd frontend
+TYPO3_E2E_ADMIN_USER=e2e-admin TYPO3_E2E_ADMIN_PASSWORD='...' npm run test:e2e:smoke
+```
+
+Run the same flow with a visible browser for local diagnosis:
+
+```bash
+cd frontend
+TYPO3_E2E_ADMIN_USER=e2e-admin TYPO3_E2E_ADMIN_PASSWORD='...' npm run test:e2e:headed
+```
+
+The Playwright smoke test is intentionally not part of CI yet. It will be added once database-backed TYPO3 setup in CI is reliable.
+
+## Deterministic Local E2E Bootstrap
+
+The local bootstrap prepares a repeatable TYPO3 state before the browser tests. It starts or verifies DDEV, installs missing Composer dependencies, applies TYPO3 extension and database schema setup, recreates the three named E2E users and their permission groups, builds the React backend assets, and flushes TYPO3 caches.
+
+This command changes local test state: it removes stale sessions and recreates only the configured E2E users plus the `e2e-component-playground-users` and `e2e-restricted-users` groups. It does **not** drop the database, remove unrelated users or groups, or delete page content.
+
+Create the ignored local environment file and replace the example password:
+
+```bash
+cp .env.e2e.example .env.e2e
+```
+
+Run the bootstrap through the frontend package:
+
+```bash
+cd frontend
+npm run e2e:bootstrap
+```
+
+The Playwright configuration loads `../.env.e2e` automatically, so the prepared smoke test can then run headlessly or headed:
+
+```bash
+npm run test:e2e
+npm run test:e2e:headed
+```
+
+Environment variables supplied by the shell take precedence over `.env.e2e`. The previous `TYPO3_E2E_USER`, `TYPO3_E2E_PASSWORD`, `TYPO3_BACKEND_USER`, and `TYPO3_BACKEND_PASSWORD` names remain supported for the admin smoke user. New local setups should use the explicit admin, allowed, and restricted variables from `.env.e2e.example`.
+
+The browser smoke test is intentionally not part of CI until the TYPO3 database setup, backend user provisioning and route-token handling are fully deterministic in CI. The local bootstrap establishes reproducibility before that database-backed CI work begins.
+
+## Local E2E Authorization Test
+
+The focused authorization test proves that the backend module is permission-aware inside TYPO3 without attempting to retest TYPO3's complete access-control system.
+
+The deterministic bootstrap provisions:
+
+- `e2e-admin`: administrator used by the full local smoke test
+- `e2e-playground`: regular backend user assigned to `e2e-component-playground-users`, whose `groupMods` includes `web_componentplayground`
+- `e2e-restricted`: regular backend user assigned to `e2e-restricted-users`, whose `groupMods` excludes `web_componentplayground`
+
+Prepare the users and groups, then run the focused authorization spec:
+
+```bash
+cd frontend
+npm run e2e:bootstrap
+npm run test:e2e:auth
+```
+
+Run the existing full flow separately with the admin E2E user:
+
+```bash
+npm run test:e2e:smoke
+```
+
+The authorization test verifies that the allowed regular user can open the module and load its React app, while the restricted regular user neither sees the module navigation entry nor loads the module through its direct route. It remains intentionally local-only and is not part of CI yet.
+
+## Local E2E Quality Gate
+
+Run the complete local browser verification in one command. The quality gate executes, in order:
+
+1. deterministic TYPO3 E2E bootstrap
+2. focused authorization test
+3. full Component Playground smoke test
+
+Create the ignored environment file once and replace all example passwords:
+
+```bash
+cp .env.e2e.example .env.e2e
+# edit .env.e2e
+```
+
+Then run:
+
+```bash
+cd frontend
+npm run e2e:local
+```
+
+Both the bootstrap and Playwright configuration load the root `.env.e2e` file automatically. Shell environment variables still take precedence, so no manual `source` command is required.
+
+This quality gate is intentionally local-only and is not part of CI yet. It is the reproducibility step before database-backed TYPO3 browser testing is integrated into CI.
+
+If `e2e:local` fails:
+
+- verify DDEV is available and the TYPO3 backend is reachable
+- rerun `npm run e2e:bootstrap`
+- inspect the HTML report with `npx playwright show-report`
+- run the failing spec in headed mode:
+
+```bash
+npm run test:e2e:auth -- --headed
+npm run test:e2e:smoke -- --headed
+```
+
 ## Compatibility
 
 TYPO3 Component Playground is tested against:
