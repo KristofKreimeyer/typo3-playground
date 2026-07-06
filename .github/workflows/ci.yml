@@ -41,6 +41,8 @@ jobs:
         run: composer validate --strict
 
       - name: Require TYPO3 matrix dependencies
+        env:
+          COMPOSER_NO_BLOCKING: 1
         run: |
           composer require \
             typo3/cms-core:^${{ matrix.typo3-version }} \
@@ -58,9 +60,10 @@ jobs:
         run: composer config --no-plugins policy.advisories.block false
 
       - name: Install dependencies
-        run: composer update --with-all-dependencies --prefer-dist --no-interaction --no-progress
         env:
+          COMPOSER_NO_BLOCKING: 1
           COMPOSER_AUDIT_ABANDONED: ignore
+        run: composer update --with-all-dependencies --prefer-dist --no-interaction --no-progress
 
       - name: PHP syntax check
         run: composer lint:php
