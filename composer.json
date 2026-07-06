@@ -48,5 +48,10 @@
     "typo3/cms": {
       "extension-key": "component_playground"
     }
+  },
+  "policy": {
+    "advisories": {
+      "block": false
+    }
   }
 }

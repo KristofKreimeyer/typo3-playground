@@ -54,8 +54,13 @@ jobs:
             phpunit/phpunit:${{ matrix.phpunit-version }} \
             --no-update
 
+      - name: Disable Composer advisory blocking for compatibility matrix
+        run: composer config --no-plugins policy.advisories.block false
+
       - name: Install dependencies
         run: composer update --with-all-dependencies --prefer-dist --no-interaction --no-progress
+        env:
+          COMPOSER_AUDIT_ABANDONED: ignore
 
       - name: PHP syntax check
         run: composer lint:php
