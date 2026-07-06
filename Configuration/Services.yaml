@@ -1,0 +1,16 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  Vendor\ComponentPlayground\:
+    resource: '../Classes/*'
+
+  Vendor\ComponentPlayground\Controller\PlaygroundController:
+    public: true
+
+  Vendor\ComponentPlayground\Controller\PreviewApiController:
+    public: true
+    tags:
+      - name: backend.controller

@@ -1,0 +1,7 @@
+<section class="tcp-component tcp-cta">
+    <f:if condition="{props.headline}"><h1>{props.headline}</h1></f:if>
+    <f:if condition="{props.text}"><p>{props.text}</p></f:if>
+    <f:if condition="{props.buttonLabel}">
+        <f:if condition="{props.buttonUrl}"><a class="tcp-button" href="{props.buttonUrl}">{props.buttonLabel}</a></f:if>
+    </f:if>
+</section>

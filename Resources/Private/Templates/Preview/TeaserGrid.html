@@ -1,0 +1,20 @@
+<section class="tcp-component tcp-teasers">
+    <f:if condition="{props.headline}"><h1>{props.headline}</h1></f:if>
+    <f:if condition="{props.items}">
+        <f:then>
+            <div class="tcp-teasers__grid">
+                <f:for each="{props.items}" as="item">
+                    <article class="tcp-teaser">
+                        <f:if condition="{item.image}"><img src="{item.image}" alt="{item.imageAlt}" /></f:if>
+                        <div class="tcp-teaser__body">
+                            <f:if condition="{item.title}"><h2>{item.title}</h2></f:if>
+                            <f:if condition="{item.text}"><p>{item.text}</p></f:if>
+                            <f:if condition="{item.url}"><a href="{item.url}">Read more</a></f:if>
+                        </div>
+                    </article>
+                </f:for>
+            </div>
+        </f:then>
+        <f:else><p class="tcp-empty">No teaser items provided.</p></f:else>
+    </f:if>
+</section>

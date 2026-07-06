@@ -1,0 +1,8 @@
+/frontend/node_modules/
+/frontend/dist/
+/frontend/*.tsbuildinfo
+/vendor/
+/public/
+/.phpunit.cache/
+/Resources/Public/BackendApp/*
+!/Resources/Public/BackendApp/.gitkeep

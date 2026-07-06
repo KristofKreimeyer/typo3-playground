@@ -1,0 +1,52 @@
+{
+  "name": "vendor/typo3-component-playground",
+  "description": "A TYPO3 backend module for developing and previewing content components with mock data.",
+  "type": "typo3-cms-extension",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "php": ">=8.2",
+    "typo3/cms-backend": "^12.4 || ^13.4",
+    "typo3/cms-core": "^12.4 || ^13.4",
+    "typo3/cms-extbase": "^12.4 || ^13.4",
+    "typo3/cms-fluid": "^12.4 || ^13.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Vendor\\ComponentPlayground\\": "Classes/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Vendor\\ComponentPlayground\\Tests\\": "Tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.5 || ^11.2 || ^12.1",
+    "typo3/testing-framework": "^8.3 || ^9.0"
+  },
+  "config": {
+    "platform": {
+      "php": "8.2.0"
+    },
+    "allow-plugins": {
+      "typo3/class-alias-loader": true,
+      "typo3/cms-composer-installers": true
+    }
+  },
+  "scripts": {
+    "lint:php": "find Classes Configuration Tests -name '*.php' -print0 | xargs -0 -n1 php -l",
+    "test:php:unit": "phpunit -c phpunit.xml.dist",
+    "test:php:functional": "phpunit -c phpunit.functional.xml.dist",
+    "test:php:security": "phpunit -c phpunit.security.xml.dist",
+    "test:php": [
+      "@test:php:unit",
+      "@test:php:functional",
+      "@test:php:security"
+    ]
+  },
+  "extra": {
+    "typo3/cms": {
+      "extension-key": "component_playground"
+    }
+  }
+}

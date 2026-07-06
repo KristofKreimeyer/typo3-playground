@@ -1,0 +1,9 @@
+<figure class="tcp-component tcp-quote">
+    <f:if condition="{props.quote}"><f:then><blockquote>{props.quote}</blockquote></f:then><f:else><p class="tcp-empty">No quote provided.</p></f:else></f:if>
+    <f:if condition="{props.author}">
+        <figcaption>
+            <strong>{props.author}</strong>
+            <f:if condition="{props.role}"><span>{props.role}</span></f:if>
+        </figcaption>
+    </f:if>
+</figure>

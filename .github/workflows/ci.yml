@@ -1,0 +1,64 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+env:
+  COMPOSER_ROOT_VERSION: 0.1.0
+
+jobs:
+  php:
+    name: PHP ${{ matrix.php-version }} / TYPO3 ${{ matrix.typo3-version }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - typo3-version: "12.4"
+            testing-framework-version: "^8.3"
+            phpunit-version: "^10.5"
+            php-version: "8.2"
+          - typo3-version: "13.4"
+            testing-framework-version: "^9.0"
+            phpunit-version: "^11.2"
+            php-version: "8.2"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: intl, mbstring, xml, zip, json, pdo, pdo_mysql, mysqli
+          coverage: none
+          tools: composer:v2
+
+      - name: Validate Composer
+        run: composer validate --strict
+
+      - name: Require TYPO3 matrix dependencies
+        run: |
+          composer require \
+            typo3/cms-core:^${{ matrix.typo3-version }} \
+            typo3/cms-backend:^${{ matrix.typo3-version }} \
+            typo3/cms-extbase:^${{ matrix.typo3-version }} \
+            typo3/cms-fluid:^${{ matrix.typo3-version }} \
+            --no-update
+
+          composer require --dev \
+            typo3/testing-framework:${{ matrix.testing-framework-version }} \
+            phpunit/phpunit:${{ matrix.phpunit-version }} \
+            --no-update
+
+      - name: Install dependencies
+        run: composer update --with-all-dependencies --prefer-dist --no-interaction --no-progress
+
+      - name: PHP syntax check
+        run: composer lint:php
+
+      - name: Run PHP unit tests
+        run: composer test:php:unit

@@ -1,0 +1,13 @@
+<section class="tcp-component tcp-hero">
+    <div class="tcp-hero__content">
+        <f:if condition="{props.eyebrow}"><p class="tcp-eyebrow">{props.eyebrow}</p></f:if>
+        <f:if condition="{props.headline}"><h1>{props.headline}</h1></f:if>
+        <f:if condition="{props.text}"><p>{props.text}</p></f:if>
+        <f:if condition="{props.buttonLabel}">
+            <f:if condition="{props.buttonUrl}"><a class="tcp-button" href="{props.buttonUrl}">{props.buttonLabel}</a></f:if>
+        </f:if>
+    </div>
+    <f:if condition="{props.image}">
+        <div class="tcp-hero__media"><img src="{props.image}" alt="{props.imageAlt}" /></div>
+    </f:if>
+</section>

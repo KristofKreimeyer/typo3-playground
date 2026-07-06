@@ -1,0 +1,61 @@
+:root {
+  color: #1f2933;
+  background: #fff;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.5;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+img { display: block; max-width: 100%; }
+
+.tcp-component { margin: 0 auto; }
+.tcp-component h1, .tcp-component h2, .tcp-component p { margin-top: 0; }
+.tcp-eyebrow { margin-bottom: 12px !important; color: #7a4b16 !important; font-size: 13px !important; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
+.tcp-empty { margin: 24px 0; padding: 20px; border: 1px dashed #c8cfd4; border-radius: 4px; color: #68737c; background: #f7f8f9; text-align: center; }
+
+.tcp-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, .85fr);
+  min-height: 440px;
+  background: #f0f2f3;
+}
+
+.tcp-hero__content { align-self: center; padding: clamp(32px, 7vw, 88px); }
+.tcp-hero h1 { max-width: 720px; margin-bottom: 20px; font-size: clamp(32px, 5vw, 64px); line-height: 1.04; }
+.tcp-hero p { max-width: 620px; margin-bottom: 28px; color: #56626d; font-size: clamp(16px, 2vw, 20px); }
+.tcp-hero__media img { width: 100%; height: 100%; object-fit: cover; }
+
+.tcp-button {
+  display: inline-block;
+  padding: 11px 18px;
+  border-radius: 3px;
+  background: #242b31;
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.tcp-teasers { padding: clamp(28px, 5vw, 64px); }
+.tcp-teasers > h1 { margin-bottom: 28px; font-size: clamp(28px, 4vw, 44px); }
+.tcp-teasers__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.tcp-teaser { overflow: hidden; border: 1px solid #dce0e3; border-radius: 5px; background: #fff; }
+.tcp-teaser > img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+.tcp-teaser__body { padding: 20px; }
+.tcp-teaser h2 { margin-bottom: 8px; font-size: 20px; }
+.tcp-teaser p { color: #68737c; }
+.tcp-teaser a { color: #a95000; font-weight: 700; }
+
+.tcp-quote { max-width: 880px; padding: clamp(40px, 8vw, 96px); text-align: center; }
+.tcp-quote blockquote { margin: 0 0 28px; font-size: clamp(26px, 4.5vw, 48px); font-weight: 650; line-height: 1.2; }
+.tcp-quote figcaption span { display: block; margin-top: 4px; color: #6b7680; }
+
+.tcp-cta { padding: clamp(40px, 8vw, 96px); background: #e8ebed; text-align: center; }
+.tcp-cta h1 { margin-bottom: 12px; font-size: clamp(30px, 5vw, 54px); }
+.tcp-cta p { max-width: 650px; margin-right: auto; margin-bottom: 26px; margin-left: auto; color: #59656f; font-size: 18px; }
+
+@media (max-width: 720px) {
+  .tcp-hero { grid-template-columns: 1fr; }
+  .tcp-hero__media { max-height: 280px; order: -1; }
+  .tcp-teasers__grid { grid-template-columns: 1fr; }
+}
